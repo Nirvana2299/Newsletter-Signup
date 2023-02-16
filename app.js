@@ -4,6 +4,10 @@ const app = express();
 const mailchimp = require("@mailchimp/mailchimp_marketing");
 const md5 = require("ts-md5");
 const { get } = require("request");
+require('dotenv').config();
+
+const audianceId = process.env.list_id;
+const apiId = process.env.api_key
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,14 +15,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.sendFile(__dirname + "/signup.html"))
 
 mailchimp.setConfig({
-  apiKey: "4d8c6db97f27a8ba0e8e4df37621755d-us21",
+  apiKey: apiId,
   server: "us21",
 });
 
 app.post("/", (req, res) => {
 
   const email = req.body.email;
-  const listId = "01909243c0";
+  const listId = audianceId;
   const subscribingUser = {
     firstName: req.body.fName,
     lastName: req.body.lName,
@@ -50,12 +54,6 @@ app.post("/", (req, res) => {
 app.post("/failure", (req,res) => res.redirect("/"))
 
 app.listen(process.env.PORT || 3000, () => console.log("initializing port 3000"));
-
-
-
-// apiKey = 19d1a8517b7936fbd939f2dcbc9a91a2-us21
-
-// audianceid = 01909243c0
 
 
 
